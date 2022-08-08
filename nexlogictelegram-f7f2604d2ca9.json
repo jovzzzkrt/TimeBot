@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "nexlogictelegram",
+  "private_key_id": "f7f2604d2ca978e4771a82e7d270806dd7a9394e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC238Vr3sB4c417\n72p1PGpXT163dY47o1CvvPfxEAM7NHYyrImVxTYD7fSugcAofgCBwpeV+i+SI8YS\nCR80FtxWfSsfIFvzFbITznCKrZvX5oS3BgaVrsau2jqXhwpC2xcHhDGZkP9BhSgy\ndbrVh8UYqsHyiRBb1S1j2ICoWSWtr8fYlHppZ2H6EIhz2/Ynhvpex8x7H1yM7ybS\nJnVrJ99uwf9AI6xXZbv8tptjBGCIkADqrIaQoEfTLPliFfVjWPzgZr3rT8DHz4Ud\nvRYMJq7TXQf/2Exc+l717jDziFN7tnTc06DI/3QQ24tcXxLdGn6/n2hgiSNvyMS5\nfe+4XaFdAgMBAAECggEAGuotRraGklPDb4mpm+6T4hzC3nJ1SA69ydegkECgkR6k\nBMpDB6F6VTK479QV4X/F+FMY91BWnwYX2UCxcHuq2ynZ5l9fWRQI3QRlqOtrQ+fg\nAYXoAzCxejuRIwsTdgqDxa3tlOHzx4NfCqosINA2MG61U8pbd4CVCRxstxpDwt+b\nqfrP0QyIbaVbS79JO/pqbj7jrSFthsNE5BsKF6Y+fRRMcU+kPN/yeGhjCdlUxMrj\nJ7RkSBi9jFBfcdd5aAuVfM2bOYbcJkv8x4XCCCwVISep8yX2ZNxqDCYbAkepJRFx\nAPx6l+NcVdZitArkPfVIeV6sat3JadsX0XmSEIbbywKBgQDt/naFSfd+I+l+sIrg\n1urf3JlN+uvBxPubyg/2Nk1BMiNW+R0DNo7gdsgBpu5BHLPcvnlz+GF8Dt4Pv2oS\nd/Lbf3MOr0TCHAJV6sWTVc+H2123dRHQTWWnzR5nSGGhEtwzUJSWUG55IWNCRP5/\ntSzli9atUqNjAVyHDqmPRnpWrwKBgQDEtbrpkWTxRlVM6Jq/eYS///auRhnQ5JFd\nQ+LlbHK7xKkgi2SgmE7hI/JpGwbON1uhvC64ZVbdXKsRp0PhIKPj34yjii1SHIe8\n94cOMx6LuZC+GDNhdVSYW2hkw2DjyGW9XOk7bdu6BkM6rnjP9xDR6oOcUaM7mo9j\nwGxtqN6LswKBgQCB2X12+cVj+FoUOmR7iic6HtUyG753yW7yMAwHbNc3xBBOCrsO\nnrzTsVsss5R4yB1GSlJfuNwPYNk9xFUuYG2L3vy6vVwJgFix4dcMrRv+5uw6BVDD\n0wasyBhXh8FkrbKg+M0pOhccVeAfLx+gNAyb7XEivdzRTtPaCGDxACYNlwKBgCU+\n57I79mn80D/stwhUQP99vr6GxXKZJLENHpQkMaE9/mwMGLSTwjO887RVCrfXIYGB\nOTNu9MCbQETqb97bqEyIUn/QtP4cKtNr5uWYZks8ipyDxo7IgYkLnbuehuT6V9FA\nG2VGStlxQB+HU5bFCClHBz588rRhco8Hq0AkPmcjAoGANco3o9AEJ73TajXULQRK\nfLVyMjdXdCDRCdBFBAXptjPby1nTDimIaAfsxG0s9YI5gA31HPCE8oAVZokzylbu\nJqD3x0znZ8muLftWl23Iu+LKy9K6RNnG6JfUje0FNGyV8kKJv8sZnAxVPrl8NWjW\nP8XPp2GnLEtzpU6lPziJG0s=\n-----END PRIVATE KEY-----\n",
+  "client_email": "nexlogicaccount@nexlogictelegram.iam.gserviceaccount.com",
+  "client_id": "105920852930617037360",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/nexlogicaccount%40nexlogictelegram.iam.gserviceaccount.com"
+}
