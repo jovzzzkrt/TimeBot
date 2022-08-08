@@ -7,7 +7,7 @@
 # This Example will show you how to use register_next_step handler.
 
 # Imports
-from asyncio.windows_events import NULL
+
 import pygsheets
 from email import message
 import telebot
