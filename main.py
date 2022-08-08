@@ -15,7 +15,7 @@ from telebot import types
 from datetime import datetime
 
 # Pygsheet Config
-service_file = r'C:\Users\Jovany\Downloads\nexlogictelegram-f7f2604d2ca9.json'
+service_file = r'nexlogictelegram-f7f2604d2ca9.json'
 gc = pygsheets.authorize(service_file=service_file)
 sheetname = 'TelegramSheet'
 sh = gc.open(sheetname)
