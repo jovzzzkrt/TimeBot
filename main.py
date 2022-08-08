@@ -1,179 +1,157 @@
-# #!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
+This Example will show you how to use register_next_step handler.
+"""
 
-# # This is a simple bot with schedule timer
-# # https://schedule.readthedocs.io
-# # -*- coding: utf-8 -*-
-# """
-# This Example will show you how to use register_next_step handler.
-
-# Imports
-
-import pygsheets
-from email import message
 import telebot
+import pygsheets
 from telebot import types
 from datetime import datetime
 
-# Pygsheet Config
 service_file = r'nexlogictelegram-f7f2604d2ca9.json'
 gc = pygsheets.authorize(service_file=service_file)
 sheetname = 'TelegramSheet'
+
 sh = gc.open(sheetname)
 wks = sh.worksheet_by_title('Timelog')
-wksnames = sh.worksheet_by_title('List')
+wksNames = sh.worksheet_by_title('List')
 
-# Telegram API Token
 API_TOKEN = '5515504844:AAF5r0yxEccG1r3tKAKvlfUBNltWgqy_DNI'
+
 bot = telebot.TeleBot(API_TOKEN)
 
 user_dict = {}
 
 class User:
-    def __init__(self, name):
-        self.timein = name
-        self.timeout = None
-
-print("Running..")
-
-# Start
-@bot.message_handler(commands=['start'])
-def process_start(message):
-    username = message.chat.username
-    finduser = wksnames.find(username)
-    nofind = int(len(finduser))
-    if nofind >= 1:
-        bot.reply_to(message, "Daily Time Record BOT")
-    else:
-        bot.reply_to(message, 'Only Intern member can use this bot')
+    def __init__(self, time1):
+        self.time1 = time1
+        self.tIn = None
+        self.tOut = None
 
 
-# Help
-@bot.message_handler(commands=['help'])
-def process_help(message):
-    username = message.chat.username
-    finduser = wksnames.find(username)
-    nofind = int(len(finduser))
-    if nofind >= 1:
-        bot.reply_to(message, "Type\n\n/timein\n/timeout")
-    else:
-        bot.reply_to(message, 'Only Intern member can use this bot')
-    
+date1 = datetime.now()
+date2 = datetime.now()
 
+print("Starting...")
+# Handle '/start' and '/help'
+@bot.message_handler(commands=['help', 'start'])
+def send_welcome(message):
+    msg = bot.reply_to(message, """\
+Hi there, I am timelog bot.
 
-# Timein
-@bot.message_handler(commands=['timein'])   
-def process_timein(message):
-    username = message.chat.username
-    finduser = wksnames.find(username)
-    nofind = int(len(finduser))
-    if nofind >= 1:
-        try:
-            now = datetime.now()
-            date_time = now.strftime("%H:%M:%S")
-            time = now.strftime("%H:%M:%S")
-            date = now.strftime('%m/%d/%y')
-            chat_id = message.chat.id
-            timein = message.text
-            user = User(timein)
-            user_dict[chat_id] = user
-            user.timein = date_time
-            
-            if timein == "/timein":
-                user_first_name = str(message.chat.first_name)
-                user_last_name = str(message.chat.last_name)
-                full_name = user_first_name + " "+ user_last_name
-                grecord = wks.get_all_records()
-                num = 2
-                for i in range(len(grecord)):
-                    num+=1
-                    if full_name == grecord[i].get("Name") and date == grecord[i].get("Date"):
-                        bot.reply_to(message, f'You have already TIMED IN')
+Here are my commands \n /timein \n /timeout \n /status
+""")
+
+@bot.message_handler(commands=['timein'])
+def process_in_step(message):
+    timein = message.text
+    if timein == "/timein":
+        firstName = str(message.chat.first_name)
+        LastName = str(message.chat.last_name)
+        fullName = (firstName + " " + LastName)
+        chat_id = message.chat.id
+
+        #datetest="July 28, 2022"
+        now = datetime.now()
+        date1 = datetime.now()
+        strtime = now.strftime("%H:%M:%S")
+        strDate = now.strftime("%B %#d, %Y")
+        date_time = now.strftime("Timeout: %m/%d/%y - %H:%M:%S")
+
+        ListofI = wksNames.get_all_records()
+        List = wks.get_all_records()
+        findName = wksNames.find(fullName)
+        celladd = wks.find(strDate)
+
+        for i in range(len(ListofI)):
+            if fullName == ListofI[i].get("List of Interns"):
+                for j in range(len(List)):
+                    if fullName == List[j].get("Intern Name") and strDate == List[j].get("Date"):
+                        msg = bot.reply_to(message, "You already Timed in!")
                         break
                 else:
-                    wks.update_value((num, 1), full_name)
-                    wks.update_value((num, 2), date)
-                    wks.update_value((num, 3), time)
-                    # timelog = []
-                    # timelog.append(str(full_name))
-                    # timelog.append(str(date))
-                    # timelog.append(str(time))
-                    # wks.append_table(timelog)   
-                    bot.reply_to(message, f'Successfully timein on {str(date_time)}')
+                        timeInn = []
+                        timeInn.append(str(strDate))
+                        timeInn.append(str(fullName))
+                        timeInn.append(str(strtime))
+                        wks.append_table(timeInn)
+                        msg = bot.reply_to(message, date_time + ' \n Type Timeout to log out.')
 
-        except Exception as e:
-            bot.reply_to(message, 'Something went wrong. Please try again')
-    else:
-        bot.reply_to(message, 'Only Intern member can use this bot')
+@bot.message_handler(commands=['timeout'])     
+def process_out_step(message):
+    timeout = message.text
+    if timeout == "/timeout":
+        chat_id = message.chat.id
 
- 
-# Timeout
-@bot.message_handler(commands=['timeout'])  
-def process_timeout(message):
-    username = message.chat.username
-    finduser = wksnames.find(username)
-    nofind = int(len(finduser))
-    if nofind >= 1:
-        try:
-            now2 = datetime.now()
-            date_time2 = now2.strftime("%H:%M:%S")
-            time = now2.strftime("%H:%M:%S")
-            timeout = message.text 
-            user = User(timeout)
-            user.timeout = date_time2
-            user_first_name = str(message.chat.first_name)
-            user_last_name = str(message.chat.last_name)
-            full_name = user_first_name + " "+ user_last_name
-            
-            date = now2.strftime('%m/%d/%y')
+        firstName2 = str(message.chat.first_name)
+        LastName2 = str(message.chat.last_name)
+        fullName2 = (firstName2 + " " + LastName2)
+        now1 = datetime.now()
+        date2 = datetime.now()
+        strtime1 = now1.strftime("%H:%M:%S")
+        strDate2 = now1.strftime("%B %#d, %Y")
 
-            if timeout == "/timeout":
-                grecord = wks.get_all_records()
+        date_time1 = now1.strftime("Timeout: %m/%d/%y - %H:%M:%S")
+        ListofI = wksNames.get_all_records()
+        List = wks.get_all_records()
+
+        celladd2 = wks.find(strDate2)
+        for i in range(len(ListofI)):
+            if fullName2 == ListofI[i].get("List of Interns"):
                 num = 1
-                for i in range(len(grecord)):
+                for j in range(len(List)):
                     num += 1
-                    if full_name == grecord[i].get("Name") and date == grecord[i].get("Date") and grecord[i].get("Timeout")== '':
-                        wks.update_value((num,4),time)
-                        bot.reply_to(message, f'Successfully timeout on {str(date_time2)}')
+                    adj2=(celladd2[0].col+1)
+                    print(List[j].get("Out"))
+                    if fullName2 == List[j].get("Intern Name") and strDate2 == List[j].get("Date") and List[j].get("Out") == "":
+                        wks.cell((num, adj2+2)).set_value(strtime1)
+                        dCell = wks.cell((num, adj2+2)).label
+                        cCell = wks.cell((num, adj2+1)).label
+
+                        formula = ("="+str(dCell)+"-"+str(cCell))
+                        duration = wks.cell((num, adj2+3)).set_value(formula)
+                        print(formula)
+                        msg = bot.reply_to(message, date_time1)
+                    elif fullName2 == List[j].get("Intern Name") and strDate2 == List[j].get("Date") and List[j].get("Out") is not None:
+                        msg = bot.reply_to(message, "You are already done for today!")
                         break
-                    elif full_name == grecord[i].get("Name") and date == grecord[i].get("Date") and grecord[i].get("Timeout")!= '':
-                        bot.reply_to(message, 'You have already TIMED OUT')
 
-        except Exception as e:
-            bot.reply_to(message, 'Something went wrong. Please try again')
-    else:
-        bot.reply_to(message, 'Only Intern member can use this bot')
-
-
-# Status
-@bot.message_handler(commands=['status'])  
+@bot.message_handler(commands=['status'])     
 def process_status(message):
-    username = message.chat.username
-    finduser = wksnames.find(username)
-    nofind = int(len(finduser))
-    if nofind >= 1:
-        user_first_name = str(message.chat.first_name) 
-        user_last_name = str(message.chat.last_name)
-        full_name = user_first_name + " "+ user_last_name
+    status = message.text
+    if status== "/status":
+        firstName = str(message.chat.first_name)
+        LastName = str(message.chat.last_name)
+        fullName = (firstName + " " + LastName)
+        chat_id = message.chat.id
+
         now = datetime.now()
-        date = now.strftime('%m/%d/%y')
-        grecord = wks.get_all_records()
-        num = 1
-        for i in range(len(grecord)):
-            num += 1
-            if full_name == grecord[i].get("Name") and date == grecord[i].get("Date") and grecord[i].get("Timein")!= '' and grecord[i].get("Timeout")!= '':
-                bot.reply_to(message, f'Date {date}\nTimein: {grecord[i].get("Timein")}\nTimeout: {grecord[i].get("Timeout")}')
-                break
-            elif full_name == grecord[i].get("Name") and date == grecord[i].get("Date") and grecord[i].get("Timein")!= '' and grecord[i].get("Timeout")== '':
-                bot.reply_to(message, f'Date {date}\nTimein: {grecord[i].get("Timein")}\nTimeout: NONE')
-                break
-        else:
-            bot.reply_to(message, "You haven't TIMED IN yet today")
-    else:
-        bot.reply_to(message, 'Only Intern member can use this bot')
+        date1 = datetime.now()
+        strtime = now.strftime("%H:%M:%S")
+        strDate = now.strftime("%B %#d, %Y")
+        date_time = now.strftime("Timeout: %m/%d/%y - %H:%M:%S")
+
+        ListofI = wksNames.get_all_records()
+        List = wks.get_all_records()
+        findName = wksNames.find(fullName)
+        celladd = wks.find(strDate)
+
+        for i in range(len(ListofI)):
+            if fullName == ListofI[i].get("List of Interns"):
+                for j in range(len(List)):
+                    if fullName == List[j].get("Intern Name") and strDate == List[j].get("Date") and List[j].get("In") is not None and List[j].get("Out") == "" :
+                        msg = bot.reply_to(message, "You already Timed in! Waiting for Time out.")
+                        break
+                    elif fullName == List[j].get("Intern Name") and strDate == List[j].get("Date") and List[j].get("In") is not None and List[j].get("Out") is not None :
+                        msg = bot.reply_to(message, "You already Done for today!")
+                        break
+                    elif List[j].get("Intern Name") is None and List[j].get("Date") is None and List[j].get("In") is None and List[j].get("Out") is None:
+                        msg = bot.reply_to(message, "You havent Timed in yet!")
+                        break
 # Enable saving next step handlers to file "./.handlers-saves/step.save".
 # Delay=2 means that after any change in next step handlers (e.g. calling register_next_step_handler())
 # saving will hapen after delay 2 seconds.
-bot.enable_save_next_step_handlers(delay=2)
+bot.enable_save_next_step_handlers(delay=0)
 
 # Load next_step_handlers from save file (default "./.handlers-saves/step.save")
 # WARNING It will work only if enable_save_next_step_handlers was called!
